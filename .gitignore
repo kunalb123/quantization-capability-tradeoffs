@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+.DS_Store
+.claude/
+
+# Quantized model weights are large, reproducible via models/download.py,
+# and not meant to live in git.
+models/weights/
