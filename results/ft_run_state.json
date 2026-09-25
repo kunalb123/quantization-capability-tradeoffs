@@ -1,0 +1,276 @@
+{
+  "done": {
+    "B|triviaqa|bf16": {
+      "stage": "control",
+      "minutes": 1.7,
+      "when": "2026-09-23T15:12:55.181812+00:00"
+    },
+    "B|triviaqa|int8": {
+      "stage": "control",
+      "minutes": 8.0,
+      "when": "2026-09-23T15:20:57.193627+00:00"
+    },
+    "B|triviaqa|awq4": {
+      "stage": "control",
+      "minutes": 5.0,
+      "when": "2026-09-23T15:25:59.801407+00:00"
+    },
+    "B|triviaqa|gptq4": {
+      "stage": "control",
+      "minutes": 5.5,
+      "when": "2026-09-23T15:31:30.937536+00:00"
+    },
+    "B|triviaqa|int4": {
+      "stage": "control",
+      "minutes": 5.0,
+      "when": "2026-09-23T15:36:28.946110+00:00"
+    },
+    "train|triviaqa|bf16|0": {
+      "stage": "triviaqa-train",
+      "minutes": 9.9,
+      "when": "2026-09-23T15:46:23.372979+00:00"
+    },
+    "train|triviaqa|int8|0": {
+      "stage": "triviaqa-train",
+      "minutes": 11.9,
+      "when": "2026-09-23T15:58:19.487247+00:00"
+    },
+    "train|triviaqa|awq4|0": {
+      "stage": "triviaqa-train",
+      "minutes": 11.7,
+      "when": "2026-09-23T16:10:02.362808+00:00"
+    },
+    "train|triviaqa|gptq4|0": {
+      "stage": "triviaqa-train",
+      "minutes": 12.0,
+      "when": "2026-09-23T16:21:59.730130+00:00"
+    },
+    "train|triviaqa|int4|0": {
+      "stage": "triviaqa-train",
+      "minutes": 11.7,
+      "when": "2026-09-23T16:33:43.419899+00:00"
+    },
+    "C1|triviaqa|bf16|0": {
+      "stage": "triviaqa-C1",
+      "minutes": 4.1,
+      "when": "2026-09-23T16:37:49.405285+00:00"
+    },
+    "C1|triviaqa|int8|0": {
+      "stage": "triviaqa-C1",
+      "minutes": 3.0,
+      "when": "2026-09-23T16:40:48.861766+00:00"
+    },
+    "C1|triviaqa|awq4|0": {
+      "stage": "triviaqa-C1",
+      "minutes": 2.4,
+      "when": "2026-09-23T16:43:14.401291+00:00"
+    },
+    "C1|triviaqa|gptq4|0": {
+      "stage": "triviaqa-C1",
+      "minutes": 2.4,
+      "when": "2026-09-23T16:45:38.852219+00:00"
+    },
+    "C1|triviaqa|int4|0": {
+      "stage": "triviaqa-C1",
+      "minutes": 2.4,
+      "when": "2026-09-23T16:48:02.706243+00:00"
+    },
+    "C2|triviaqa|int8|0": {
+      "stage": "triviaqa-C2",
+      "minutes": 2.8,
+      "when": "2026-09-23T16:50:50.685539+00:00"
+    },
+    "C2|triviaqa|awq4|0": {
+      "stage": "triviaqa-C2",
+      "minutes": 3.8,
+      "when": "2026-09-23T16:54:38.379621+00:00"
+    },
+    "C2|triviaqa|gptq4|0": {
+      "stage": "triviaqa-C2",
+      "minutes": 4.4,
+      "when": "2026-09-23T16:59:00.946188+00:00"
+    },
+    "C2|triviaqa|int4|0": {
+      "stage": "triviaqa-C2",
+      "minutes": 3.9,
+      "when": "2026-09-23T17:02:54.488242+00:00"
+    },
+    "D|triviaqa|int8|0": {
+      "stage": "triviaqa-D",
+      "minutes": 3.0,
+      "when": "2026-09-23T17:05:52.397793+00:00"
+    },
+    "D|triviaqa|awq4|0": {
+      "stage": "triviaqa-D",
+      "minutes": 54.7,
+      "when": "2026-09-23T18:00:33.607623+00:00"
+    },
+    "D|triviaqa|gptq4|0": {
+      "stage": "triviaqa-D",
+      "minutes": 98.3,
+      "when": "2026-09-23T19:38:51.938670+00:00"
+    },
+    "D|triviaqa|int4|0": {
+      "stage": "triviaqa-D",
+      "minutes": 2.2,
+      "when": "2026-09-23T19:41:03.557824+00:00"
+    },
+    "B|gsm8k|bf16": {
+      "stage": "control",
+      "minutes": 73.0,
+      "when": "2026-09-23T20:54:03.363903+00:00"
+    },
+    "B|gsm8k|int8": {
+      "stage": "control",
+      "minutes": 40.9,
+      "when": "2026-09-23T21:34:59.243666+00:00"
+    },
+    "B|gsm8k|awq4": {
+      "stage": "control",
+      "minutes": 23.9,
+      "when": "2026-09-23T21:58:55.542359+00:00"
+    },
+    "B|gsm8k|gptq4": {
+      "stage": "control",
+      "minutes": 302.4,
+      "when": "2026-09-24T03:01:20.249176+00:00"
+    },
+    "B|gsm8k|int4": {
+      "stage": "control",
+      "minutes": 21.9,
+      "when": "2026-09-24T03:23:15.637784+00:00"
+    },
+    "train|gsm8k|bf16|0": {
+      "stage": "gsm8k-train",
+      "minutes": 31.3,
+      "when": "2026-09-24T03:54:34.368525+00:00"
+    },
+    "train|gsm8k|int8|0": {
+      "stage": "gsm8k-train",
+      "minutes": 39.3,
+      "when": "2026-09-24T04:33:51.012693+00:00"
+    },
+    "train|gsm8k|awq4|0": {
+      "stage": "gsm8k-train",
+      "minutes": 39.1,
+      "when": "2026-09-24T05:12:54.955286+00:00"
+    },
+    "train|gsm8k|gptq4|0": {
+      "stage": "gsm8k-train",
+      "minutes": 39.5,
+      "when": "2026-09-24T05:52:25.396913+00:00"
+    },
+    "train|gsm8k|int4|0": {
+      "stage": "gsm8k-train",
+      "minutes": 38.5,
+      "when": "2026-09-24T06:30:52.807066+00:00"
+    },
+    "C1|gsm8k|bf16|0": {
+      "stage": "gsm8k-C1",
+      "minutes": 48.3,
+      "when": "2026-09-24T07:19:13.690955+00:00"
+    },
+    "C1|gsm8k|int8|0": {
+      "stage": "gsm8k-C1",
+      "minutes": 28.3,
+      "when": "2026-09-24T07:47:34.385142+00:00"
+    },
+    "C1|gsm8k|awq4|0": {
+      "stage": "gsm8k-C1",
+      "minutes": 19.3,
+      "when": "2026-09-24T08:06:50.919466+00:00"
+    },
+    "C1|gsm8k|gptq4|0": {
+      "stage": "gsm8k-C1",
+      "minutes": 20.1,
+      "when": "2026-09-24T08:26:56.303148+00:00"
+    },
+    "C1|gsm8k|int4|0": {
+      "stage": "gsm8k-C1",
+      "minutes": 19.1,
+      "when": "2026-09-24T08:46:02.853399+00:00"
+    },
+    "C2|gsm8k|int8|0": {
+      "stage": "gsm8k-C2",
+      "minutes": 24.0,
+      "when": "2026-09-24T09:10:01.155904+00:00"
+    },
+    "C2|gsm8k|awq4|0": {
+      "stage": "gsm8k-C2",
+      "minutes": 19.2,
+      "when": "2026-09-24T09:29:14.646448+00:00"
+    },
+    "C2|gsm8k|gptq4|0": {
+      "stage": "gsm8k-C2",
+      "minutes": 20.5,
+      "when": "2026-09-24T09:49:45.668756+00:00"
+    },
+    "C2|gsm8k|int4|0": {
+      "stage": "gsm8k-C2",
+      "minutes": 18.7,
+      "when": "2026-09-24T10:08:25.484763+00:00"
+    },
+    "D|gsm8k|int8|0": {
+      "stage": "gsm8k-D",
+      "minutes": 24.2,
+      "when": "2026-09-24T10:32:38.533107+00:00"
+    },
+    "D|gsm8k|awq4|0": {
+      "stage": "gsm8k-D",
+      "minutes": 64.0,
+      "when": "2026-09-24T11:36:40.530541+00:00"
+    },
+    "D|gsm8k|gptq4|0": {
+      "stage": "gsm8k-D",
+      "minutes": 106.2,
+      "when": "2026-09-24T13:22:51.577287+00:00"
+    },
+    "D|gsm8k|int4|0": {
+      "stage": "gsm8k-D",
+      "minutes": 13.4,
+      "when": "2026-09-24T13:36:16.855051+00:00"
+    },
+    "train|gsm8k|bf16|1": {
+      "stage": "seeds",
+      "minutes": 31.3,
+      "when": "2026-09-24T14:07:32.344476+00:00"
+    },
+    "C1|gsm8k|bf16|1": {
+      "stage": "seeds",
+      "minutes": 47.5,
+      "when": "2026-09-24T14:55:04.098000+00:00"
+    },
+    "train|gsm8k|int4|1": {
+      "stage": "seeds",
+      "minutes": 38.4,
+      "when": "2026-09-24T15:33:29.981531+00:00"
+    },
+    "C1|gsm8k|int4|1": {
+      "stage": "seeds",
+      "minutes": 18.6,
+      "when": "2026-09-24T15:52:08.680524+00:00"
+    },
+    "train|gsm8k|bf16|2": {
+      "stage": "seeds",
+      "minutes": 31.9,
+      "when": "2026-09-24T16:24:03.385742+00:00"
+    },
+    "C1|gsm8k|bf16|2": {
+      "stage": "seeds",
+      "minutes": 49.8,
+      "when": "2026-09-24T17:13:50.960493+00:00"
+    },
+    "train|gsm8k|int4|2": {
+      "stage": "seeds",
+      "minutes": 40.2,
+      "when": "2026-09-24T17:54:05.360228+00:00"
+    },
+    "C1|gsm8k|int4|2": {
+      "stage": "seeds",
+      "minutes": 19.8,
+      "when": "2026-09-24T18:13:55.333464+00:00"
+    }
+  },
+  "failed": {},
+  "started": "2026-09-23T14:59:10.824241+00:00"
+}

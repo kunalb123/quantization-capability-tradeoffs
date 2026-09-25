@@ -25,8 +25,18 @@ class Item(TypedDict):
     messages: list[dict[str, str]]
 
 
-def _output_path(scheme: QuantScheme, task: str) -> Path:
-    return RESULTS_DIR / task / f"{scheme.name}.jsonl"
+def _output_path(scheme: QuantScheme, task: str, variant: str | None) -> Path:
+    """Where one (scheme, task, variant) run's results live.
+
+    variant=None keeps the original layout (results/<task>/<scheme>.jsonl) so
+    the pre-existing quantization-only results stay exactly where analyze.py
+    expects them. Fine-tuning arms pass a variant like "C1/seed0", giving
+    results/<task>/C1/seed0/<scheme>.jsonl — a separate file per arm, keyed by
+    the same item ids, which is what keeps every arm paired for McNemar.
+    """
+    if variant is None:
+        return RESULTS_DIR / task / f"{scheme.name}.jsonl"
+    return RESULTS_DIR / task / variant / f"{scheme.name}.jsonl"
 
 
 def _load_done_ids(path: Path) -> set[str]:
@@ -47,9 +57,24 @@ def _load_done_ids(path: Path) -> set[str]:
     return done
 
 
-def run_items(scheme: QuantScheme, task: str, items: Iterable[Item]) -> Path:
+def run_items(
+    scheme: QuantScheme,
+    task: str,
+    items: Iterable[Item],
+    *,
+    adapter_path: Path | str | None = None,
+    model_path: Path | str | None = None,
+    variant: str | None = None,
+) -> Path:
     """Generate a completion for every item under `scheme` and append results
     to results/<task>/<scheme.name>.jsonl, skipping ids already recorded.
+
+    adapter_path attaches a trained LoRA adapter at load time without fusing
+    it (arm C1: quantized base + high-precision adapter). model_path overrides
+    which weights are loaded, for arms whose model is a transient build rather
+    than scheme.path (C2's fused+requantized model, D's tune-then-quantize
+    model) — scheme is still passed so the result file is named for the
+    quantization scheme being measured. variant selects the output subdirectory.
 
     Decoding is greedy (temperature 0, per config.TEMPERATURE) so the only
     thing that varies across schemes for a given item is the model weights.
@@ -69,18 +94,22 @@ def run_items(scheme: QuantScheme, task: str, items: Iterable[Item]) -> Path:
     from mlx_lm.sample_utils import make_sampler
     import mlx.core as mx
 
-    out_path = _output_path(scheme, task)
+    out_path = _output_path(scheme, task, variant)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     done_ids = _load_done_ids(out_path)
 
     items = [item for item in items if item["id"] not in done_ids]
+    label = f"{scheme.name}/{task}" + (f"/{variant}" if variant else "")
     if not items:
-        print(f"[{scheme.name}/{task}] all items already done, skipping")
+        print(f"[{label}] all items already done, skipping")
         return out_path
 
     mx.reset_peak_memory()
     load_start = time.perf_counter()
-    model, tokenizer = load(str(scheme.path))
+    load_kwargs = {}
+    if adapter_path is not None:
+        load_kwargs["adapter_path"] = str(adapter_path)
+    model, tokenizer = load(str(model_path or scheme.path), **load_kwargs)
     load_time_s = time.perf_counter() - load_start
 
     sampler = make_sampler(temp=TEMPERATURE)
@@ -113,6 +142,6 @@ def run_items(scheme: QuantScheme, task: str, items: Iterable[Item]) -> Path:
             f.flush()
 
             if i % 10 == 0 or i == len(items):
-                print(f"[{scheme.name}/{task}] {i}/{len(items)}")
+                print(f"[{label}] {i}/{len(items)}")
 
     return out_path

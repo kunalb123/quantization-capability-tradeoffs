@@ -66,3 +66,74 @@ def _validate():
 
 
 _validate()
+
+
+# ---------------------------------------------------------------------------
+# Fine-tuning extension
+# ---------------------------------------------------------------------------
+# Every scheme is tuned with an identical budget (same rank, scale, steps,
+# batch size, LR, data, and data order). That's the whole point: if the LoRA
+# config varied by scheme we'd be comparing tuning budgets, not quantization
+# schemes. _validate_finetune() below enforces the parts of that which are
+# expressible as an assert.
+
+ADAPTERS_DIR = PROJECT_ROOT / "finetune" / "adapters"
+FT_DATA_DIR = PROJECT_ROOT / "finetune" / "data"
+BUILDS_DIR = MODELS_DIR / "builds"  # transient fused/requantized models
+
+FT_TASKS = ("gsm8k", "triviaqa")
+
+# Arms (see README). B is eval-only; C1/C2 share one training run per
+# (task, scheme, seed); D reuses the *bf16* adapter, so it needs no training
+# of its own.
+#   B  - untuned, 0-shot                      (control for the prompt change)
+#   C1 - quantize -> tune, adapter unfused    (QLoRA, deployed as base+adapter)
+#   C2 - quantize -> tune, fused + requantized (fine-tuning rounded to the grid)
+#   D  - tune bf16 -> fuse -> quantize        (order of operations reversed)
+ARMS = ("B", "C1", "C2", "D")
+
+# C2 and D are only meaningful where quantization actually happens: fusing a
+# bf16 adapter into a bf16 base is lossless, so C2/D at bf16 would just be C1
+# again under another name (and cost a 39-minute GSM8K eval to prove it).
+QUANTIZED_SCHEMES = tuple(s.name for s in SCHEMES if s.bits < 16)
+
+FT_SEEDS = {"gsm8k": (0, 1, 2), "triviaqa": (0,)}
+# Seeds 1 and 2 exist to size training noise against the between-scheme gaps.
+# Running them for all five schemes would cost ~7 hrs of GSM8K eval for a
+# variance estimate, so they're restricted to the two extremes of the range.
+SEED_NOISE_SCHEMES = ("bf16", "int4")
+
+LORA_FINE_TUNE_TYPE = "lora"
+LORA_NUM_LAYERS = 16
+LORA_RANK = 8
+LORA_SCALE = 20.0   # mlx-lm's own default; note this is not HF's alpha/rank
+LORA_DROPOUT = 0.0
+LORA_ITERS = 600
+LORA_BATCH_SIZE = 4
+LORA_LR = 1e-5
+LORA_MAX_SEQ_LENGTH = 1024
+LORA_MASK_PROMPT = True  # loss on the completion only, not the question
+
+FT_TRAIN_N = 2000
+FT_VALID_N = 200
+
+# Tuned models are evaluated 0-shot, matching how they were trained.
+FT_FEW_SHOT = False
+
+
+def _validate_finetune():
+    assert set(FT_TASKS) <= set(TASKS), f"FT_TASKS must be a subset of TASKS, got {FT_TASKS}"
+    assert set(FT_SEEDS) == set(FT_TASKS), "every FT task needs a seed tuple"
+    assert set(SEED_NOISE_SCHEMES) <= {s.name for s in SCHEMES}, (
+        "SEED_NOISE_SCHEMES must name defined schemes"
+    )
+    assert BASELINE_SCHEME not in QUANTIZED_SCHEMES, (
+        "the baseline must be the unquantized scheme"
+    )
+    # Training data is drawn from each task's train split *after* the first
+    # FEW_SHOT_K rows, which are already burned as prompt examples. Nothing
+    # here can check the split itself, but a nonzero offset is the precondition.
+    assert FEW_SHOT_K > 0, "FT data builder skips train[:FEW_SHOT_K] to avoid leakage"
+
+
+_validate_finetune()

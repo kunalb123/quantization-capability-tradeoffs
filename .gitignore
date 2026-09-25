@@ -8,3 +8,9 @@ __pycache__/
 # Quantized model weights are large, reproducible via models/download.py,
 # and not meant to live in git.
 models/weights/
+
+# Run logs and one-off queued run scripts.
+logs/
+
+# LoRA adapters: ~2.5GB, reproducible via finetune/train.py.
+finetune/adapters/
