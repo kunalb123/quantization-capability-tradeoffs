@@ -178,14 +178,19 @@ Note how much of the apparent effect size rides on the scoring rule: the same re
 
 ### Caveat: int4 fine-tuning is seed-unstable
 
-C1 accuracy across three seeds:
+C1 accuracy across seeds (GSM8K, n=500 each):
 
-| scheme | seed 0 | seed 1 | seed 2 | spread |
-|--------|--------|--------|--------|--------|
-| bf16 | 67.4% | 66.8% | 67.6% | 0.8pp |
-| int4 | 62.6% | 63.0% | 66.0% | 3.4pp |
+| scheme | s0 | s1 | s2 | s3 | s4 | spread |
+|--------|----|----|----|----|----|--------|
+| bf16 | 67.4% | 66.8% | 67.6% | — | — | 0.8pp |
+| int4 | 62.6% | 63.0% | 66.0% | 60.0% | 64.0% | **6.0pp** (sd 2.2pp) |
 
-int4's seed-to-seed variance is ~4× bf16's, and two seeds were not enough to see it. The regression above (−8.0 to −11.4pp depending on seed) remains larger than the spread, but per-scheme C1 numbers from a single seed should be read with ±3pp of slack at 4 bits. Seeds 3-4 are queued.
+Five seeds at int4 span 60.0-66.0%, against 0.8pp of spread across three bf16 seeds. Tuning a 4-bit model is a far noisier process than tuning the same model in BF16, which is worth knowing in its own right: it means a single 4-bit fine-tuning run tells you much less than the same run at BF16.
+
+Two consequences for reading the tables above:
+
+- **The regression survives.** B→C1 at int4 is negative at every seed, from −8.0pp to −14.0pp against an untuned 74.0%. The finding does not depend on seed choice.
+- **The 4-bit scheme ordering does not.** int4's seed range covers both awq4 (65.4%) and gptq4 (64.0%), which are single-seed numbers. Any claim that one 4-bit scheme fine-tunes better than another is unsupported at this n — separating them would need several seeds per scheme, not one.
 
 
 ---

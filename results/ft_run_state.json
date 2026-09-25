@@ -269,6 +269,26 @@
       "stage": "seeds",
       "minutes": 19.8,
       "when": "2026-09-24T18:13:55.333464+00:00"
+    },
+    "train|gsm8k|int4|3": {
+      "stage": "seeds",
+      "minutes": 38.3,
+      "when": "2026-09-25T10:38:20.000105+00:00"
+    },
+    "C1|gsm8k|int4|3": {
+      "stage": "seeds",
+      "minutes": 18.2,
+      "when": "2026-09-25T10:56:31.238557+00:00"
+    },
+    "train|gsm8k|int4|4": {
+      "stage": "seeds",
+      "minutes": 38.5,
+      "when": "2026-09-25T11:35:01.164703+00:00"
+    },
+    "C1|gsm8k|int4|4": {
+      "stage": "seeds",
+      "minutes": 18.7,
+      "when": "2026-09-25T11:53:45.922944+00:00"
     }
   },
   "failed": {},
