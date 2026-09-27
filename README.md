@@ -93,6 +93,8 @@ IpD Score = capability retention (mean accuracy across all four tasks, as a % of
 
 - **Quantization also breaks fine-tuning, silently.** LoRA-tuning a 4-bit model and then fusing + requantizing the adapter discards it outright — the resulting model is statistically indistinguishable from the untuned one, because every weight update is smaller than half a quantization step. At 8 bits the same pipeline is lossless. See [Fine-Tuning Under Quantization](#fine-tuning-under-quantization).
 
+- **Fine-tuning a 4-bit model is itself noisy.** Five LoRA seeds at INT4 span 6.0pp of GSM8K accuracy (60.0-66.0%, sd 2.2pp) against 0.8pp across three BF16 seeds. Large effects still read cleanly through that noise, but single-seed gaps between the 4-bit schemes do not — the INT4 seed range covers both AWQ-4 and GPTQ-4.
+
 - **AWQ vs GPTQ has no clear winner at 4-bit.** AWQ-4 does slightly better on GSM8K and JSON; GPTQ-4 does slightly better on TriviaQA and IFEval. Differences between the two are smaller than either's gap from BF16, and neither dominates the other across tasks.
 
 ---
@@ -110,7 +112,7 @@ Four arms, all evaluated 0-shot on the identical 500 items so every comparison i
 | **C2** | C1 fused into the quantized base, then requantized — the "ship one file" path |
 | **D** | tuned in BF16, fused, then quantized once |
 
-LoRA r=8, scale 20, 600 iters, lr 1e-5, `mask_prompt`, seeds 0-2 on GSM8K.
+LoRA r=8, scale 20, 600 iters, lr 1e-5, `mask_prompt`. Seeds 0-2 on GSM8K for bf16, extended to seeds 0-4 at int4 once the seed spread turned out to be large (see [the caveat below](#caveat-int4-fine-tuning-is-seed-unstable)).
 
 ### Fuse-then-requantize silently destroys a 4-bit adapter
 
